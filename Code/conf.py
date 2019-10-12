@@ -1,6 +1,6 @@
-import constants
 import pymssql
 import psycopg2
+import constants
 
 #SQL Connection
 def mssql_connection():
@@ -29,9 +29,9 @@ def postgreSql_Connection():
 #Extracting Data
 def get_data_from_sql(sp):
     try:
-        con=mssql_connection()
-        cur=con.cursor()
-        cur.execute("execute {} @output_IS_SUCCESSFUL=0, @output_STATUS=0".format(sp))
+        con = mssql_connection()
+        cur = con.cursor()
+        cur.execute("execute {} @OUTPUT_IS_SUCCESSFUL=0, @OUTPUT_IS_STATUS=0".format(sp))
         data_return = cur.fetchall()
         con.commit()
         
