@@ -6,7 +6,7 @@ def extractor():
 	try:
 		query = '['+constants._sql_schema+'].['+constants._sql_SPname+']'
 
-		#Sandbox
+		#Sandbox Conn
 		con_sb = mssql_connection()
 		data = get_data_from_sql(query)
 
@@ -15,17 +15,16 @@ def extractor():
 			sys.exit(0)
 		else:
 			access = "w"
-			newline = {"newline":""}
+			newline = {"newline": ""}
 
 		#with open("test.csv", "w") as outfile: #newfile avoid empty rows betwen
-		with open ("test.csv", access, **newline) as outfile:
+		with open (constants._CSVname, access, **newline) as outfile:
 			writer = csv.writer(outfile, quoting=csv.QUOTE_NONNUMERIC)
-			writer.writerow(
-			["ID", "PERSONAL_ID", "NAME", "PHONE", "ADDRESS"]
-		)
-		for row in data:
-			print (row)
-			writer.writerow(row)
+			writer.writerow(["tblclientid", "tblclientusername", "tblclientpassword", "tblclientmigrate"])
+
+			for row in data:
+				print (row)
+				writer.writerow(row)
 
 	except IOError as e:
 		print("Error {0} Getting data from MSSQL: {1}".format(e.errno,e.strerror))
@@ -52,6 +51,7 @@ while True:
 	if opcionMenu=="1":
 		print ("")
 		input("Has pulsado la opción 1...\npulsa una tecla para continuar")
+		extractor()
 
 	elif opcionMenu=="2":
 		print ("")
