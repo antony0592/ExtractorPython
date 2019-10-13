@@ -1,6 +1,6 @@
 USE OLDB89694;
 GO 
--- Abrir la clave Clave1 
+-- Abrir la clave Clave1  
 OPEN SYMMETRIC KEY Clave1 DECRYPTION BY CERTIFICATE Certificado; 
 GO 
 INSERT INTO [OLDB89694].[PROYECT].[tblphone]([tblphoneclientid],[tblphonenumber],[tblphonemigrate]) VALUES(1692,EncryptByKey(Key_GUID('Clave1'),'506-73-85-01-22'),0);

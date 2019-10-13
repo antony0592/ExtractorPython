@@ -8,6 +8,7 @@ CREATE TABLE [PROYECT].[tblclient](
   [tblclientid] INT NOT NULL IDENTITY,
   [tblclientusername] VARBINARY(MAX) NOT NULL,
   [tblclientpassword] VARBINARY(MAX) NOT NULL,
+  [tblclientcreate] DATETIME NOT NULL,
   [tblclientmigrate] TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY ([tblclientid]));
   
@@ -18,6 +19,7 @@ CREATE TABLE [PROYECT].[tblphone](
   [tblphoneid] INT NOT NULL IDENTITY,
   [tblphoneclientid] INT NOT NULL,
   [tblphonenumber] VARBINARY(MAX) NOT NULL,
+  [tblphonecreate] DATETIME NOT NULL,
   [tblphonemigrate] TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY ([tblphoneid]),
   CONSTRAINT [fk_1] 
@@ -33,6 +35,7 @@ CREATE TABLE [PROYECT].[tbladdress](
   [tbladdressid] INT NOT NULL IDENTITY,
   [tbladdressclientid] INT NOT NULL,
   [tbladdressdetail] VARBINARY(MAX) NOT NULL,
+  [tbladdresscreate] DATETIME NOT NULL,
   [tbladdressmigrate] TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY ([tbladdressid]),
   CONSTRAINT [fk_2] 
@@ -48,6 +51,7 @@ CREATE TABLE [PROYECT].[tblemail](
   [tblemailid] INT NOT NULL IDENTITY,
   [tblemailclientid] INT NOT NULL,
   [tblemaildetail] VARBINARY(MAX) NOT NULL,
+  [tblemailcreate] DATETIME NOT NULL,
   [tblemailmigrate] TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY ([tblemailid]),
   CONSTRAINT [fk_3] 
@@ -63,6 +67,7 @@ CREATE TABLE [PROYECT].[tblcreditcard](
   [tblcreditcardid] INT NOT NULL IDENTITY,
   [tblcreditcardclientid] INT NOT NULL,
   [tblcreditcarddetail] VARBINARY(MAX) NOT NULL,
+  [tblcreditcardcreate] DATETIME NOT NULL,
   [tblcreditcardmigrate] TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY ([tblcreditcardid]),
   CONSTRAINT [fk_4] 
@@ -78,6 +83,7 @@ CREATE TABLE [PROYECT].[tblproduct](
   [tblproductdid] INT NOT NULL IDENTITY,
   [tblproductname] VARCHAR(50) NOT NULL,
   [tblproductprice] DECIMAL(10,2) NOT NULL,
+  [tblproductcreate] DATETIME NOT NULL,
   [tblproductmigrate] TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY ([tblproductdid]));
   
@@ -85,10 +91,11 @@ CREATE TABLE [PROYECT].[tblproduct](
 -- Table tblorder
 -- -----------------------------------------------------  
 CREATE TABLE [PROYECT].[tblorder](
-  [tblorderidproductd] INT NOT NULL,
+  [tblorderidproduct] INT NOT NULL,
   [tblorderidclient] INT NOT NULL,
   [tblordermount] DECIMAL(10,2) NOT NULL,
-  [tblproductmigrate] TINYINT NOT NULL DEFAULT 0,
+  [tblordercreate] DATETIME NOT NULL,
+  [tblordermigrate] TINYINT NOT NULL DEFAULT 0,
   CONSTRAINT [fk_5] 
 		FOREIGN KEY ([tblorderidproductd]) 
 		REFERENCES [PROYECT].[tblproduct] ([tblproductdid])
