@@ -6,7 +6,8 @@ _sql_user = "sa"
 _sql_password = "1992"
 _sql_schema = "PROYECT"
 _sql_version = "Microsoft SQL Server 2008 R2"
-_sql_SPname = "spGetAll"
+_sql_SPname1 = "spProyect"
+_sql_SPname2 = "spProyect2"
 
 #conectionToPostgreSQL
 _postgre_server = "localhost"
@@ -17,5 +18,14 @@ _postgre_password = "postgres"
 _postgre_schema = "PROYECT"
 _postgre_version = "PostgreSQL 12"
 
-_CSVname = "Export.csv"
+#Nombres de directorios
+_DirProyect = "C:/Users/asalazar/Documents/GitHub/ExtractorPython/files/"
+_DirClient = "client/"
+_DirAddress = "address/"
+_DirEmail = "email/"
+_DirCreditCard = "creditcard/"
+_DirOrder = "orders/"
+_DirPhone = "phone/"
+_DirProduct = "produc/"
+_FileExt = ".csv"
 
