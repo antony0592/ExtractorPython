@@ -7,7 +7,7 @@ _sql_password = "1992"
 _sql_schema = "PROYECT"
 _sql_version = "Microsoft SQL Server 2008 R2"
 _sql_SPname1 = "spProyect"
-_sql_SPname2 = "spProyect2"
+_sql_SPname2 = "spProyect"
 
 #conectionToPostgreSQL
 _postgre_server = "localhost"
@@ -26,6 +26,6 @@ _DirEmail = "email/"
 _DirCreditCard = "creditcard/"
 _DirOrder = "orders/"
 _DirPhone = "phone/"
-_DirProduct = "produc/"
+_DirProduct = "product/"
 _FileExt = ".csv"
 
