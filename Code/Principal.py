@@ -4,30 +4,29 @@ from datetime import datetime
 import constants
 
 sp_name=""
-def extractor(sp_name, option_menu):
+def extractor(sp_name, option_menu, fromdate, todate):
 	try:
 		now = datetime.now()
-		nameCSV= str(now.strftime("%Y%m%d%H%M%S"))+constants._FileExt
+		nameCSV= str(now.strftime("%Y%m%d%H%M%S"))+'_'
 		if option_menu <=5:
-			query = '['+constants._sql_schema+'].['+constants._sql_SPname1+'] @OPCION_MENU ='+ str(option_menu) + ','
+			query = '['+constants._sql_schema+'].['+constants._sql_SPname1+'] @OPTION_MENU ="'+ str(option_menu) + '", @FROMDATE ="'+ str(fromdate) + '", @TODATE = "'+ str(todate) + '", '
 		else:
-			query = '['+constants._sql_schema+'].['+constants._sql_SPname2+'] @OPCION_MENU ='+ str(option_menu) + ','
-	
+			query = '['+constants._sql_schema+'].['+constants._sql_SPname2+'] @OPTION_MENU ="'+ str(option_menu) + '", @FROMDATE ="'+ str(fromdate) + '", @TODATE = "'+ str(todate) + '", '
 		#Directory_files_exports
 		if option_menu == 1: 
-			folder = os.path.join(constants._DirProyect, constants._DirClient + nameCSV)
+			folder = os.path.join(constants._DirProyect, constants._DirClient + nameCSV+'clients'+constants._FileExt)
 		elif option_menu == 2: 
-			folder = os.path.join(constants._DirProyect, constants._DirAddress + nameCSV)
+			folder = os.path.join(constants._DirProyect, constants._DirAddress + nameCSV+'address'+constants._FileExt)
 		elif option_menu == 3: 
-			folder = os.path.join(constants._DirProyect, constants._DirCreditCard + nameCSV)
+			folder = os.path.join(constants._DirProyect, constants._DirCreditCard + nameCSV+'creditcards' +constants._FileExt)
 		elif option_menu == 4: 
-			folder = os.path.join(constants._DirProyect, constants._DirEmail + nameCSV)
+			folder = os.path.join(constants._DirProyect, constants._DirEmail + nameCSV+'emails'+constants._FileExt)
 		elif option_menu == 5: 
-			folder = os.path.join(constants._DirProyect, constants._DirPhone + nameCSV)
+			folder = os.path.join(constants._DirProyect, constants._DirPhone + nameCSV+'phones'+constants._FileExt)
 		elif option_menu == 6: 
-			folder = os.path.join(constants._DirProyect, constants._DirProduct + nameCSV)	
+			folder = os.path.join(constants._DirProyect, constants._DirProduct + nameCSV+'products' +constants._FileExt)
 		elif option_menu == 7: 
-			folder = os.path.join(constants._DirProyect, constants._DirOrder + nameCSV)
+			folder = os.path.join(constants._DirProyect, constants._DirOrder + nameCSV+'orders' +constants._FileExt)
 		#Sandbox Conn
 		con_sb = mssql_connection()
 		data = get_data_from_sql(query)
@@ -89,14 +88,18 @@ while True:
 				submenu()
 			# solicitamos una opción al usuario
 			optionSubMenu = int(input("Digitela aquí >> "))
-			if optionSubMenu <=5 and optionSubMenu>=1:
+			from_date = ""
+			to_date = ""
+			now2 = datetime.now()
+			if optionSubMenu <=7 and optionSubMenu>=1:
 				print ("")
-				extractor(constants._sql_SPname1, optionSubMenu)
-				input("\npulsa una tecla para continuar")
-				cont=cont+1
-			elif optionSubMenu >=6:
-				print ("")
-				extractor(constants._sql_SPname2, optionSubMenu)
+				print ("Por favor brinde fechas solicitadas con formato: (Año-Mes-Día), Ejemplo: "+str(now2.strftime("%Y-%m-%d")))
+				from_date = input("FROM >> ")
+				to_date = input("TO >> ")
+				extractor(constants._sql_SPname1, 
+							optionSubMenu, 
+							datetime.strptime(from_date, "%Y-%m-%d"), 
+							datetime.strptime(to_date, "%Y-%m-%d"))
 				input("\npulsa una tecla para continuar")
 				cont=cont+1
 			elif optionSubMenu==0:

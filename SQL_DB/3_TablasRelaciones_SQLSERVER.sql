@@ -80,25 +80,27 @@ CREATE TABLE [PROYECT].[tblcreditcard](
 -- Table tblproduct
 -- -----------------------------------------------------    
 CREATE TABLE [PROYECT].[tblproduct](
-  [tblproductdid] INT NOT NULL IDENTITY,
+  [tblproductid] INT NOT NULL IDENTITY,
   [tblproductname] VARCHAR(50) NOT NULL,
   [tblproductprice] DECIMAL(10,2) NOT NULL,
   [tblproductcreate] DATETIME NOT NULL,
   [tblproductmigrate] TINYINT NOT NULL DEFAULT 0,
-  PRIMARY KEY ([tblproductdid]));
+  PRIMARY KEY ([tblproductid]));
   
 -- -----------------------------------------------------
 -- Table tblorder
 -- -----------------------------------------------------  
 CREATE TABLE [PROYECT].[tblorder](
+  [tblorderid] INT NOT NULL IDENTITY,
   [tblorderidproduct] INT NOT NULL,
   [tblorderidclient] INT NOT NULL,
   [tblordermount] DECIMAL(10,2) NOT NULL,
   [tblordercreate] DATETIME NOT NULL,
   [tblordermigrate] TINYINT NOT NULL DEFAULT 0,
+  PRIMARY KEY ([tblorderid]),
   CONSTRAINT [fk_5] 
-		FOREIGN KEY ([tblorderidproductd]) 
-		REFERENCES [PROYECT].[tblproduct] ([tblproductdid])
+		FOREIGN KEY ([tblorderidproduct]) 
+		REFERENCES [PROYECT].[tblproduct] ([tblproductid])
 		ON DELETE NO ACTION
 		ON UPDATE NO ACTION,
   CONSTRAINT [fk_6] 
