@@ -1,40 +1,52 @@
 import os, sys, csv, datetime
-from conf import mssql_connection, get_data_from_sql
+from conf import mssql_connection, get_data_from_sql, sqlite_connection
 from datetime import datetime
 import constants
 
 sp_name=""
 def extractor(sp_name, option_menu, fromdate, todate):
 	try:
+		#Sandbox Conn SQLite
+		con_sbSQLLite = sqlite_connection()
+		#Sandbox Conn SQLserver
+		con_sbSQLServer = mssql_connection()
+
+		cursorlite = con_sbSQLLite.cursor()
 		now = datetime.now()
 		nameCSV= str(now.strftime("%Y%m%d%H%M%S"))+'_'
 		if option_menu <=5:
 			query = '['+constants._sql_schema+'].['+constants._sql_SPname1+'] @OPTION_MENU ="'+ str(option_menu) + '", @FROMDATE ="'+ str(fromdate) + '", @TODATE = "'+ str(todate) + '", '
 		else:
 			query = '['+constants._sql_schema+'].['+constants._sql_SPname2+'] @OPTION_MENU ="'+ str(option_menu) + '", @FROMDATE ="'+ str(fromdate) + '", @TODATE = "'+ str(todate) + '", '
-		#Directory_files_exports
-		if option_menu == 1: 
-			folder = os.path.join(constants._DirProyect, constants._DirClient + nameCSV+'clients'+constants._FileExt)
-		elif option_menu == 2: 
-			folder = os.path.join(constants._DirProyect, constants._DirAddress + nameCSV+'address'+constants._FileExt)
-		elif option_menu == 3: 
-			folder = os.path.join(constants._DirProyect, constants._DirCreditCard + nameCSV+'creditcards' +constants._FileExt)
-		elif option_menu == 4: 
-			folder = os.path.join(constants._DirProyect, constants._DirEmail + nameCSV+'emails'+constants._FileExt)
-		elif option_menu == 5: 
-			folder = os.path.join(constants._DirProyect, constants._DirPhone + nameCSV+'phones'+constants._FileExt)
-		elif option_menu == 6: 
-			folder = os.path.join(constants._DirProyect, constants._DirProduct + nameCSV+'products' +constants._FileExt)
-		elif option_menu == 7: 
-			folder = os.path.join(constants._DirProyect, constants._DirOrder + nameCSV+'orders' +constants._FileExt)
-		#Sandbox Conn
-		con_sb = mssql_connection()
+			
 		data = get_data_from_sql(query)
-
 		if len(data) <=0:
 			print('No data retrieved')
 			sys.exit(0)
 		else:
+			#Directory_files_exports
+			if option_menu == 1: 
+				folder = os.path.join(constants._DirProyect, constants._DirClient + nameCSV+'clients'+constants._FileExt)
+				cursorlite.execute("INSERT INTO [tblexport] VALUES(null, 1,'"+constants._DirClient+nameCSV+'clients'+constants._FileExt+"','"+str(fromdate)+"','"+str(todate)+"', 1, 0,'"+str(now.strftime("%Y-%m-%d %H:%M:%S"))+"');")
+			elif option_menu == 2: 
+				folder = os.path.join(constants._DirProyect, constants._DirAddress + nameCSV+'address'+constants._FileExt)
+				cursorlite.execute("INSERT INTO [tblexport] VALUES(null, 2,'"+constants._DirAddress+nameCSV+'address'+constants._FileExt+"','"+str(fromdate)+"','"+str(todate)+"', 1, 0,'"+str(now.strftime("%Y-%m-%d %H:%M:%S"))+"');")
+			elif option_menu == 3: 
+				folder = os.path.join(constants._DirProyect, constants._DirCreditCard + nameCSV+'creditcards' +constants._FileExt)
+				cursorlite.execute("INSERT INTO [tblexport] VALUES(null, 3,'"+constants._DirCreditCard+nameCSV+'creditcards'+constants._FileExt+"','"+str(fromdate)+"','"+str(todate)+"', 1, 0,'"+str(now.strftime("%Y-%m-%d %H:%M:%S"))+"');")
+			elif option_menu == 4: 
+				folder = os.path.join(constants._DirProyect, constants._DirEmail + nameCSV+'emails'+constants._FileExt)
+				cursorlite.execute("INSERT INTO [tblexport] VALUES(null, 4,'"+constants._DirEmail+nameCSV+'emails'+constants._FileExt+"','"+str(fromdate)+"','"+str(todate)+"', 1, 0,'"+str(now.strftime("%Y-%m-%d %H:%M:%S"))+"');")
+			elif option_menu == 5: 
+				folder = os.path.join(constants._DirProyect, constants._DirPhone + nameCSV+'phones'+constants._FileExt)
+				cursorlite.execute("INSERT INTO [tblexport] VALUES(null, 5,'"+constants._DirPhone+nameCSV+'phones'+constants._FileExt+"','"+str(fromdate)+"','"+str(todate)+"', 1, 0,'"+str(now.strftime("%Y-%m-%d %H:%M:%S"))+"');")
+			elif option_menu == 6: 
+				folder = os.path.join(constants._DirProyect, constants._DirProduct + nameCSV+'products' +constants._FileExt)
+				cursorlite.execute("INSERT INTO [tblexport] VALUES(null, 6,'"+constants._DirProduct+nameCSV+'products'+constants._FileExt+"','"+str(fromdate)+"','"+str(todate)+"', 1, 0,'"+str(now.strftime("%Y-%m-%d %H:%M:%S"))+"');")
+			elif option_menu == 7: 
+				folder = os.path.join(constants._DirProyect, constants._DirOrder + nameCSV+'orders' +constants._FileExt)
+				cursorlite.execute("INSERT INTO [tblexport] VALUES(null, 7,'"+constants._DirOrder+nameCSV+'orders'+constants._FileExt+"','"+str(fromdate)+"','"+str(todate)+"', 1, 0,'"+str(now.strftime("%Y-%m-%d %H:%M:%S"))+"');")
+
 			access = "w"
 			newline = {"newline": ""}
 		print (folder)
@@ -49,7 +61,9 @@ def extractor(sp_name, option_menu, fromdate, todate):
 	except IOError as e:
 		print("Error {0} Getting data from MSSQL: {1}".format(e.errno,e.strerror))
 	finally:
-		con_sb.close()
+		con_sbSQLLite.commit()
+		con_sbSQLServer.close()
+		con_sbSQLLite.close()
 
 def submenu():
 	os.system('cls') # NOTA para Linux tienes que cambiar cls por clear
@@ -72,6 +86,7 @@ def menu():
 	print ("Selecciona una opción:")
 	print ("\t1 - Ejecutar nueva extracción desde "+constants._sql_version+".")
 	print ("\t2 - Importar CSV a "+constants._postgre_version+".")
+	print ("\t3 - Ver bitácora de eventos desde "+constants._sqlite_version+".")
 	print ("\t0 - Salir")
 
 while True:
@@ -110,7 +125,40 @@ while True:
 		
 	elif optionMenu=="2":
 		print ("")
-		input("Has pulsado la opción 2...\npulsa una tecla para continuar")
+		input("\npulsa una tecla para continuar")
+
+	elif optionMenu=="3":
+		#Sandbox Conn SQLite
+		con_sbSQLLite = sqlite_connection()
+		cursorlite = con_sbSQLLite.cursor()
+		from_date2 = ""
+		to_date2 = ""
+		now3 = datetime.now()
+		print ("")
+		print ("Por favor brinde fechas solicitadas con formato: (Año-Mes-Día), Ejemplo: "+str(now3.strftime("%Y-%m-%d")))
+		from_date2 = input("FROM >> ")
+		to_date2 = input("TO >> ")
+		cursorlite.execute("SELECT tblexport.tblexportid AS 'ID',"+
+							"tbltable.tbltablename AS 'TABLA DE ORIGEN',"+
+							"tblexport.tblexportfilecsv AS 'CSV',"+
+							"tblexport.tblexportfrom AS 'DESDE',"+
+							"tblexport.tblexportto AS 'HASTA',"+
+							"tblexport.tbleventexportsuccess AS 'EXPORTADO SQLserver',"+
+							"tblexport.tbleventimportsuccess AS 'IMPORTADO PostgreSQL'"+
+							"FROM tblexport JOIN tbltable ON tblexport.tblexporttableid = tbltable.tbltablesid")
+		for i in cursorlite:
+			print("ID= "+str(i[0])+
+			" TABLA DE ORIGEN="+str(i[1])+
+			" CSV="+str(i[2])+
+			" DESDE="+str(i[3])+
+			" HASTA="+str(i[4])+
+			" EXPORTADO SQLserver="+str(i[5])+
+			" IMPORTADO PostgreSQL="+str(i[6]))
+			print("\n")
+
+		con_sbSQLLite.commit()
+		con_sbSQLLite.close()
+		input("\npulsa una tecla para continuar")
 
 	elif optionMenu=="0":
 		break
