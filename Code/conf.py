@@ -1,5 +1,6 @@
 import pymssql
 import psycopg2
+import sqlite3
 import constants
 
 #SQL Connection
@@ -25,6 +26,15 @@ def postgreSql_Connection():
         return cnx
     except:
         print ('Error PostgreSQL connection')
+
+#Postgre Connection
+def sqlite_connection():
+    try:
+        cnx=sqlite3.connect(constants._DirDBSQLite)
+        return cnx
+    except:
+        print ('Error SQLite connection')
+
 
 #Extracting Data
 def get_data_from_sql(sp):

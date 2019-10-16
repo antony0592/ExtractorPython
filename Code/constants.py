@@ -18,6 +18,10 @@ _postgre_password = "postgres"
 _postgre_schema = "PROYECT"
 _postgre_version = "PostgreSQL 12"
 
+#conectionToSQLite
+_sqlite_version = "SQLite 3.5.1"
+_DirDBSQLite = "C:/Users/asalazar/Documents/GitHub/ExtractorPython/Code/DBbitacora.s3db"
+
 #Nombres de directorios
 _DirProyect = "C:/Users/asalazar/Documents/GitHub/ExtractorPython/files/"
 _DirClient = "client/"
