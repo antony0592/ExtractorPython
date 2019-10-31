@@ -25,7 +25,7 @@ CREATE TABLE [PROYECT].[tblphone](
   CONSTRAINT [fk_1] 
 		FOREIGN KEY ([tblphoneclientid]) 
 		REFERENCES [PROYECT].[tblclient] ([tblclientid])
-		ON DELETE NO ACTION
+		ON DELETE CASCADE
 		ON UPDATE NO ACTION);
 
 -- -----------------------------------------------------
@@ -41,7 +41,7 @@ CREATE TABLE [PROYECT].[tbladdress](
   CONSTRAINT [fk_2] 
 		FOREIGN KEY ([tbladdressclientid]) 
 		REFERENCES [PROYECT].[tblclient] ([tblclientid])
-		ON DELETE NO ACTION
+		ON DELETE CASCADE
 		ON UPDATE NO ACTION);
 
 -- -----------------------------------------------------
@@ -57,7 +57,7 @@ CREATE TABLE [PROYECT].[tblemail](
   CONSTRAINT [fk_3] 
 		FOREIGN KEY ([tblemailclientid]) 
 		REFERENCES [PROYECT].[tblclient] ([tblclientid])
-		ON DELETE NO ACTION
+		ON DELETE CASCADE
 		ON UPDATE NO ACTION);
  
 -- -----------------------------------------------------
@@ -73,7 +73,7 @@ CREATE TABLE [PROYECT].[tblcreditcard](
   CONSTRAINT [fk_4] 
 		FOREIGN KEY ([tblcreditcardclientid]) 
 		REFERENCES [PROYECT].[tblclient] ([tblclientid])
-		ON DELETE NO ACTION
+		ON DELETE CASCADE
 		ON UPDATE NO ACTION);
 
 -- -----------------------------------------------------
@@ -101,10 +101,10 @@ CREATE TABLE [PROYECT].[tblorder](
   CONSTRAINT [fk_5] 
 		FOREIGN KEY ([tblorderidproduct]) 
 		REFERENCES [PROYECT].[tblproduct] ([tblproductid])
-		ON DELETE NO ACTION
+		ON DELETE CASCADE
 		ON UPDATE NO ACTION,
   CONSTRAINT [fk_6] 
 		FOREIGN KEY ([tblorderidclient]) 
 		REFERENCES [PROYECT].[tblclient] ([tblclientid])
-		ON DELETE NO ACTION
+		ON DELETE CASCADE
 		ON UPDATE NO ACTION);
