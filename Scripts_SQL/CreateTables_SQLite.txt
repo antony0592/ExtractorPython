@@ -15,6 +15,14 @@ CREATE TABLE [tblexport] (
 FOREIGN KEY([tblexporttableid]) REFERENCES [tbltable]([tbltablesid])
 );
 
+CREATE TABLE [tblimport] (
+[tblimportid] INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
+[tblimporttableid] INTEGER  NOT NULL,
+[tblimportfilecsv] VARCHAR(45)  NOT NULL,
+[tblimportsuccess] INTEGER  NOT NULL,
+[tblimportcreate] TIMESTAMP  NOT NULL
+)
+
 INSERT INTO [tbltable] VALUES(1,'Client');
 INSERT INTO [tbltable] VALUES(2,'Address');
 INSERT INTO [tbltable] VALUES(3,'CreditCard');

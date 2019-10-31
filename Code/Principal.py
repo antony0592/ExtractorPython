@@ -173,7 +173,6 @@ while True:
 			print("El "+str(i[3])+
 			" se extrajo este .CSV: "+str(i[2])+
 			" de la Tabla: "+str(i[1]))
-			print("\n")
 
 		con_sbSQLLite.commit()
 		con_sbSQLLite.close()
