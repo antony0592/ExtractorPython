@@ -18,11 +18,10 @@ def mssql_connection():
 #Postgre Connection
 def postgreSql_Connection():
     try:
-        cnx=psycopg2.connect("host="+constants._postgre_server+
-                            "dbname="+constants._postgre_database+
-                            "user="+constants._postgre_user+
-                            "password="+constants._postgre_password+
-                            "port="+constants._postgre_server_port)
+        cnx=psycopg2.connect(host=constants._postgre_server, 
+                            database=constants._postgre_database, 
+                            user=constants._postgre_user, 
+                            password=constants._postgre_password)
         return cnx
     except:
         print ('Error PostgreSQL connection')

@@ -1,0 +1,15 @@
+-- Database: NEW_B89694
+
+-- DROP DATABASE "NEW_B89694";
+
+CREATE DATABASE "NEW_B89694"
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Spanish_Spain.1252'
+    LC_CTYPE = 'Spanish_Spain.1252'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+
+COMMENT ON DATABASE "NEW_B89694"
+    IS 'SÓLO SE USA DE ALMACÉN';
