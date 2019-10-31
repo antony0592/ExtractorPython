@@ -11,10 +11,10 @@ _sql_SPname2 = "spProyect"
 
 #conectionToPostgreSQL
 _postgre_server = "localhost"
-_postgre_database = "name"
+_postgre_database = "NEWB89694"
 _postgre_server_port = "5432"
 _postgre_user = "postgres"
-_postgre_password = "postgres"
+_postgre_password = "1992"
 _postgre_schema = "PROYECT"
 _postgre_version = "PostgreSQL 12"
 

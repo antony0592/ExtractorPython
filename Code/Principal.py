@@ -21,7 +21,8 @@ def extractor(sp_name, option_menu, fromdate, todate):
 			
 		data = get_data_from_sql(query)
 		if len(data) <=0:
-			print('No data retrieved')
+			print('No datos para extraer')
+			input("Se cerrará el programa... Vuelva a ejecutarlo.")
 			sys.exit(0)
 		else:
 			#Directory_files_exports
@@ -75,7 +76,19 @@ def submenu():
 	print ("\t5 - Números de teléfono de los clientes.")
 	print ("\t6 - Catálogo de productos del sistema.")
 	print ("\t7 - Órdenes de compras.")
-	print ("\t0 - Volver al Menú_Principal.")			
+	print ("\t0 - Volver al Menú_Principal.")	
+
+def submenu2():
+	os.system('cls') # NOTA para Linux tienes que cambiar cls por clear
+	print ("Seleccione la información que desea importar a: "+constants._postgre_version+".")
+	print ("\t1 - Clientes del sistema.")
+	print ("\t2 - Direcciones de los clientes.")
+	print ("\t3 - Tarjetas de crédito de los clientes.")
+	print ("\t4 - Direcciones de correo de los clientes.")
+	print ("\t5 - Números de teléfono de los clientes.")
+	print ("\t6 - Catálogo de productos del sistema.")
+	print ("\t7 - Órdenes de compras.")
+	print ("\t0 - Volver al Menú_Principal.")		
 
 def menu():
 	"""
@@ -85,9 +98,9 @@ def menu():
 	print ("Menú_Principal")
 	print ("Selecciona una opción:")
 	print ("\t1 - Ejecutar nueva extracción desde "+constants._sql_version+".")
-	print ("\t2 - Importar CSV a "+constants._postgre_version+".")
+	print ("\t2 - Eliminar órdenes de compra y clientes.")
 	print ("\t3 - Ver bitácora de eventos desde "+constants._sqlite_version+".")
-	print ("\t0 - Salir")
+	print ("\t0 - Salir.")
 
 while True:
 	# Mostramos el menu
@@ -124,36 +137,22 @@ while True:
 				input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")	
 		
 	elif optionMenu=="2":
-		print ("")
-		input("\npulsa una tecla para continuar")
+		print ("qw")
 
 	elif optionMenu=="3":
 		#Sandbox Conn SQLite
 		con_sbSQLLite = sqlite_connection()
 		cursorlite = con_sbSQLLite.cursor()
-		from_date2 = ""
-		to_date2 = ""
-		now3 = datetime.now()
 		print ("")
-		print ("Por favor brinde fechas solicitadas con formato: (Año-Mes-Día), Ejemplo: "+str(now3.strftime("%Y-%m-%d")))
-		from_date2 = input("FROM >> ")
-		to_date2 = input("TO >> ")
 		cursorlite.execute("SELECT tblexport.tblexportid AS 'ID',"+
 							"tbltable.tbltablename AS 'TABLA DE ORIGEN',"+
 							"tblexport.tblexportfilecsv AS 'CSV',"+
-							"tblexport.tblexportfrom AS 'DESDE',"+
-							"tblexport.tblexportto AS 'HASTA',"+
-							"tblexport.tbleventexportsuccess AS 'EXPORTADO SQLserver',"+
-							"tblexport.tbleventimportsuccess AS 'IMPORTADO PostgreSQL'"+
+							"tblexport.tblexportcreate AS 'FECHA_EXTRAJO' "+
 							"FROM tblexport JOIN tbltable ON tblexport.tblexporttableid = tbltable.tbltablesid")
 		for i in cursorlite:
-			print("ID= "+str(i[0])+
-			" TABLA DE ORIGEN="+str(i[1])+
-			" CSV="+str(i[2])+
-			" DESDE="+str(i[3])+
-			" HASTA="+str(i[4])+
-			" EXPORTADO SQLserver="+str(i[5])+
-			" IMPORTADO PostgreSQL="+str(i[6]))
+			print("El "+str(i[3])+
+			" se extrajo este .CSV: "+str(i[2])+
+			" de la Tabla: "+str(i[1]))
 			print("\n")
 
 		con_sbSQLLite.commit()
