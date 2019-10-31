@@ -3,6 +3,18 @@ from conf import mssql_connection, get_data_from_sql, sqlite_connection
 from datetime import datetime
 import constants
 
+#Delete Data SPDELETE
+def delete_data_from_sql(sp):
+    try:
+        con = mssql_connection()
+        cur = con.cursor()
+        cur.execute("execute {} @OUTPUT_IS_SUCCESSFUL=0, @OUTPUT_IS_STATUS=0".format(sp))
+        con.commit()     
+        return 0
+    except IOError as e:
+        print ("Error {0} Getting data from MSSQL: {1}". format(e.errno, e.strerror))    
+
+
 sp_name=""
 def extractor(sp_name, option_menu, fromdate, todate):
 	try:
@@ -67,7 +79,7 @@ def extractor(sp_name, option_menu, fromdate, todate):
 		con_sbSQLLite.close()
 
 def submenu():
-	os.system('cls') # NOTA para Linux tienes que cambiar cls por clear
+	os.system('cls') 
 	print ("Seleccione la información que desea extraer:")
 	print ("\t1 - Clientes del sistema.")
 	print ("\t2 - Direcciones de los clientes.")
@@ -77,24 +89,12 @@ def submenu():
 	print ("\t6 - Catálogo de productos del sistema.")
 	print ("\t7 - Órdenes de compras.")
 	print ("\t0 - Volver al Menú_Principal.")	
-
-def submenu2():
-	os.system('cls') # NOTA para Linux tienes que cambiar cls por clear
-	print ("Seleccione la información que desea importar a: "+constants._postgre_version+".")
-	print ("\t1 - Clientes del sistema.")
-	print ("\t2 - Direcciones de los clientes.")
-	print ("\t3 - Tarjetas de crédito de los clientes.")
-	print ("\t4 - Direcciones de correo de los clientes.")
-	print ("\t5 - Números de teléfono de los clientes.")
-	print ("\t6 - Catálogo de productos del sistema.")
-	print ("\t7 - Órdenes de compras.")
-	print ("\t0 - Volver al Menú_Principal.")		
-
+	
 def menu():
 	"""
 	Función que limpia la pantalla y muestra nuevamente el menu
 	"""
-	os.system('cls') # NOTA para Linux tienes que cambiar cls por clear
+	os.system('cls') 
 	print ("Menú_Principal")
 	print ("Selecciona una opción:")
 	print ("\t1 - Ejecutar nueva extracción desde "+constants._sql_version+".")
@@ -137,8 +137,28 @@ while True:
 				input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")	
 		
 	elif optionMenu=="2":
-		print ("qw")
-
+		try:
+			print ("Selecciona una opción:")
+			print ("\t1 - Eliminar los clientes del sistema.")
+			print ("\t2 - Eliminar las órdenes de compras.")
+			print ("\t0 - Volver al Menú_Principal.")
+			eliminar = input("Digitela aquí >> ")	
+			if eliminar=="1":
+				query1 = '['+constants._sql_schema+'].['+constants._sql_SPname3+'] @eliminar ="1", '
+				delete_data_from_sql(query1)
+				input("Clientes eliminados de forma correcta...\nRegresando al menú principal")
+				menu()
+			elif eliminar=="2":
+				query2 = '['+constants._sql_schema+'].['+constants._sql_SPname3+'] @eliminar ="2", '
+				delete_data_from_sql(query2)
+				input("Ordenes de compra eliminadas de forma correcta...\nRegresando al menú principal")
+				menu()
+			elif eliminar=="0":
+				menu()
+		except IOError as e:
+			print ("Error {0} Getting data from MSSQL: {1}". format(e.errno, e.strerror))  
+		finally:
+			menu()
 	elif optionMenu=="3":
 		#Sandbox Conn SQLite
 		con_sbSQLLite = sqlite_connection()

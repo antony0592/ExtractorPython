@@ -6,13 +6,26 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 ALTER PROCEDURE [PROYECT].[spDelete]
+	@ELIMINAR INTEGER,
 	@OUTPUT_IS_SUCCESSFUL INT OUTPUT,
 	@OUTPUT_IS_STATUS VARCHAR(25) OUTPUT
 	AS
 BEGIN 
 	TRY
-		DELETE FROM [OLDB89694].[PROYECT].[tblclient] WHERE [tblclient].tblclientmigrate = 1
-		DELETE FROM [OLDB89694].[PROYECT].[tblorder] WHERE [tblorder].tblordermigrate = 1
+		IF (@ELIMINAR=1)
+		BEGIN
+			DELETE FROM [OLDB89694].[PROYECT].[tblclient] WHERE [tblclient].tblclientmigrate = 1
+		END
+		ELSE IF (@ELIMINAR=2)
+		BEGIN	
+			DELETE FROM [OLDB89694].[PROYECT].[tblorder] WHERE [tblorder].tblordermigrate = 1
+		END	
+		ELSE
+		BEGIN
+			SET @OUTPUT_IS_STATUS ='Error running'
+			SET @OUTPUT_IS_SUCCESSFUL = 0
+		END
+			
 		SET @OUTPUT_IS_STATUS ='Successful running'
 		SET @OUTPUT_IS_SUCCESSFUL = 1
 	END TRY

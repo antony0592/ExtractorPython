@@ -8,6 +8,7 @@ _sql_schema = "PROYECT"
 _sql_version = "Microsoft SQL Server 2008 R2"
 _sql_SPname1 = "spProyect"
 _sql_SPname2 = "spProyect"
+_sql_SPname3 = "spDelete"
 
 #conectionToPostgreSQL
 _postgre_server = "localhost"
